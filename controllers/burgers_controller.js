@@ -23,19 +23,30 @@ function routeListeners(app) {
 
 	app.put("/update", (req, res) => {
 		console.log("UPDATE ==================");
-		db.Burger
-			.update(
-				{
-					devoured: true
-				},
-				{
-					where: { id: req.body.id }
+		// console.log(req.body);
+		db.Customer
+			.findAll({
+				where: { name: req.body.customer_name }
+			})
+			.then(result => {
+				//If the customer DNE
+				if (result.length === 0) {
+					db.Customer.create({
+						name: req.body.customer_name
+					});
 				}
-			)
+			})
 			.then(() => {
-				console.log("Burger updated");
-				res.redirect("/");
-			});
+				db.Burger.update(
+					{
+						devoured: true
+					},
+					{
+						where: { id: req.body.burger_id }
+					}
+				);
+			})
+			.then(() => res.redirect("/"));
 	});
 }
 

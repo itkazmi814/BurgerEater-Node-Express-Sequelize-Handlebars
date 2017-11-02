@@ -1,17 +1,35 @@
-module.exports = function(sequelize, DataTypes) {
-	var Burger = sequelize.define("Burger", {
-		burger_name: { 
-			type: DataTypes.STRING 
+module.exports = (sequelize, DataTypes) => {
+	var Burger = sequelize.define(
+		"Burger",
+		{
+			burger_name: {
+				type: DataTypes.STRING
+			},
+			devoured: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
+			eaten_by: {
+				type: DataTypes.STRING,
+				allowNull: true
+			},
+			date: {
+				type: DataTypes.DATE
+			}
 		},
-		devoured: {
-			type: DataTypes.BOOLEAN,
-			defaultValue: false 
-		},
-		date: {
-			type: DataTypes.DATE
+		{
+			timestamps: false
 		}
-	},{
-		timestamps: false
-	});
+	);
+
+	Burger.associate = parentTable => {
+		Burger.belongsTo(parentTable.Customer, {
+			onDelete: "CASCADE",
+			foreignKey: {
+				allowNull: false
+			}
+		});
+	};
+
 	return Burger;
-}
+};
