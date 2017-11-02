@@ -21,6 +21,7 @@ function routeListeners(app) {
 			});
 	});
 
+	//Tested this path using curl. Did not update the handlebars file to accomodate for entering an "eater" or displaying their name
 	app.put("/update", (req, res) => {
 		console.log("UPDATE ==================");
 		// console.log(req.body);
